@@ -1,0 +1,9 @@
+.idea
+
+build
+
+.gradle
+
+out
+
+src/main/resources/Secret

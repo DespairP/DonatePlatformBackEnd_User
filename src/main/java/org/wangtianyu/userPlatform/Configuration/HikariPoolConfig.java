@@ -21,7 +21,8 @@ public class HikariPoolConfig {
     @Bean
     public HikariConfig hikariConfig(){
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3306?database=donateplatform");
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/donatePlatform");
+        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.setUsername(username);
         config.setPassword(password);
         config.setMaximumPoolSize(30);

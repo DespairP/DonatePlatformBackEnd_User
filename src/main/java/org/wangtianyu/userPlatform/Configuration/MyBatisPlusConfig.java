@@ -4,22 +4,26 @@ import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
+import java.io.IOException;
 
 @Configuration
 public class MyBatisPlusConfig {
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer(){
         MapperScannerConfigurer configurer = new MapperScannerConfigurer();
-        configurer.setBasePackage("org.wangTianYu.org.wangtianyu.userPlatform.Mapper");
+        configurer.setBasePackage("org.wangtianyu.userPlatform.Mapper");
         return configurer;
     }
 
     @Bean
-    public MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean(DataSource dataSource){
+    public MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean(DataSource dataSource) throws IOException {
         MybatisSqlSessionFactoryBean bean = new MybatisSqlSessionFactoryBean();
         bean.setDataSource(dataSource);
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        bean.setMapperLocations(resolver.getResources("Mapper/*.xml"));
         return bean;
     }
 }

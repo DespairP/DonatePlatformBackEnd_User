@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wangtianyu.userPlatform.Mapper.DonateProjectMapper">
+
+    <resultMap id="ProjectBaseResultMap" type="org.wangtianyu.userPlatform.Model.DonateProject">
+            <id property="projectId" column="project_id" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="projectName" column="project_name" jdbcType="VARCHAR"/>
+            <result property="projectMilestone" column="project_milestone" jdbcType="DECIMAL"/>
+            <result property="projectIconPath" column="project_icon_path" jdbcType="VARCHAR"/>
+            <result property="projectCreateDate" column="project_create_date" jdbcType="TIMESTAMP"/>
+            <result property="projectPublishPublicDate" column="project_publish_public_date" jdbcType="TIMESTAMP"/>
+            <result property="projectDurationDays" column="project_duration_days" jdbcType="INTEGER"/>
+            <result property="projectStatus" column="project_status" typeHandler="org.wangtianyu.userPlatform.Handler.EnumProjectStatusHandler"/>
+    </resultMap>
+
+    <resultMap id="ProjectAssociateUserBaseResultMap" type="org.wangtianyu.userPlatform.Model.DonateProject">
+        <id property="projectId" column="project_id" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="projectName" column="project_name" jdbcType="VARCHAR"/>
+        <result property="projectMilestone" column="project_milestone" jdbcType="DECIMAL"/>
+        <result property="projectIconPath" column="project_icon_path" jdbcType="VARCHAR"/>
+        <result property="projectCreateDate" column="project_create_date" jdbcType="TIMESTAMP"/>
+        <result property="projectPublishPublicDate" column="project_publish_public_date" jdbcType="TIMESTAMP"/>
+        <result property="projectDurationDays" column="project_duration_days" jdbcType="INTEGER"/>
+        <result property="projectStatus" column="project_status" typeHandler="org.wangtianyu.userPlatform.Handler.EnumProjectStatusHandler"/>
+        <association property="owner" javaType="org.wangtianyu.userPlatform.Model.Platformuser" resultMap="org.wangtianyu.userPlatform.Mapper.PlatformuserMapper.BaseResultMap"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_Project_List">
+        project_id,user_id,project_name,
+        project_milestone,project_icon_path,project_create_date,
+        project_publish_public_date,project_duration_days,project_status
+    </sql>
+
+
+    <sql id="Base_Column_Project_Associate_List">
+        project_id,donateproject.user_id,project_name,
+        project_milestone,project_icon_path,project_create_date,
+        project_publish_public_date,project_duration_days,project_status,
+        platformuser.user_id,user_number,user_account,
+        user_password,user_reg_type,user_create_date,
+        user_last_login_time,user_nick_name,user_is_disposed
+    </sql>
+
+    <select id="selectedExhibitProjects" resultMap="ProjectAssociateUserBaseResultMap">
+        select <include refid="Base_Column_Project_Associate_List"/> from donateproject
+            INNER join platformuser
+                on donateproject.user_id = platformuser.user_id
+        order by project_create_date
+        limit 0,6
+    </select>
+
+    <select id="selectProjectJoinWithUser" resultMap="ProjectAssociateUserBaseResultMap">
+        select <include refid="Base_Column_Project_Associate_List"/> from donateproject
+        LEFT join platformuser
+        on donateproject.user_id = platformuser.user_id
+        where donateproject.project_id = #{projectId}
+    </select>
+    <select id="selectProjectPageable" resultMap="ProjectAssociateUserBaseResultMap">
+        select <include refid="Base_Column_Project_Associate_List"/> from donateproject
+        INNER join platformuser
+        on donateproject.user_id = platformuser.user_id ${ew.customSqlSegment}
+    </select>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wangtianyu.userPlatform.Mapper.DonateMapper">
+
+    <resultMap id="BaseResultMap" type="org.wangtianyu.userPlatform.Model.Donate">
+            <id property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <id property="projectId" column="project_id" jdbcType="VARCHAR"/>
+            <result property="donatePrice" column="donate_price" jdbcType="DECIMAL"/>
+            <result property="donateIsIgnored" column="donate_is_ignored" jdbcType="BOOLEAN"/>
+    </resultMap>
+
+    <resultMap id="DonateDtoResultMap" type="org.wangtianyu.userPlatform.Model.DonateDTO">
+        <id property="projectId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="totalProgress" column="total_donate_price" jdbcType="DECIMAL"/>
+        <result property="donatedUserNumber" column="total_donate_people" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="selectDonatesCountInformation" resultMap="DonateDtoResultMap" parameterType="list">
+        select donateproject.project_id,sum(donate_price) as total_donate_price,count(*) as total_donate_people from donate                                                                                                                   inner join donateproject on donate.project_id = donateproject.project_id
+        where donateproject.project_id in
+        <foreach collection="list" item="project" open="(" close=")" separator=",">
+            #{project.projectId,javaType=STRING}
+        </foreach>
+        group by donateproject.project_id
+    </select>
+    <select id="selectDonateCountInformation" resultMap="DonateDtoResultMap">
+        select donateproject.project_id,sum(donate_price) as total_donate_price,count(*) as total_donate_people from donate                                                                                                                   inner join donateproject on donate.project_id = donateproject.project_id
+        where donateproject.project_id = #{project.projectId}
+    </select>
+
+    <sql id="Base_Column_List">
+        user_id,project_id,donate_price,donate_is_ignored
+    </sql>
+
+
+
+</mapper>

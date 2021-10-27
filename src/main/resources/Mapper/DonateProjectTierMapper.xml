@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wangtianyu.userPlatform.Mapper.DonateProjectTierMapper">
+
+    <resultMap id="BaseResultMap" type="org.wangtianyu.userPlatform.Model.DonateProjectTier">
+            <id property="projectId" column="project_id" jdbcType="VARCHAR"/>
+            <id property="projectDonateTierLevel" column="project_donate_tier_level" jdbcType="INTEGER"/>
+            <result property="projectDonateTierName" column="project_donate_tier_name" jdbcType="VARCHAR"/>
+            <result property="projectDonateTierPrice" column="project_donate_tier_price" jdbcType="DECIMAL"/>
+            <result property="projectDonateTierDescription" column="project_donate_tier_description" jdbcType="VARCHAR"/>
+            <result property="projectDonateTierIsDisposed" column="project_donate_tier_is_disposed" jdbcType="BOOLEAN"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        project_id,project_donate_tier_level,project_donate_tier_name,
+        project_donate_tier_price,project_donate_tier_description,project_donate_tier_is_disposed
+    </sql>
+</mapper>

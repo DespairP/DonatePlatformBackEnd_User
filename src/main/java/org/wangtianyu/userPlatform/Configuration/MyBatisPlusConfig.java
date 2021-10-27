@@ -1,5 +1,8 @@
 package org.wangtianyu.userPlatform.Configuration;
 
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -19,11 +22,25 @@ public class MyBatisPlusConfig {
     }
 
     @Bean
-    public MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean(DataSource dataSource) throws IOException {
+    public MybatisSqlSessionFactoryBean mybatisSqlSessionFactoryBean(DataSource dataSource,MybatisPlusInterceptor mybatisPlusInterceptor) throws IOException {
         MybatisSqlSessionFactoryBean bean = new MybatisSqlSessionFactoryBean();
         bean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         bean.setMapperLocations(resolver.getResources("Mapper/*.xml"));
+        bean.setPlugins(mybatisPlusInterceptor);
         return bean;
+    }
+
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor(PaginationInnerInterceptor paginationInnerInterceptor){
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(paginationInnerInterceptor);
+        return interceptor;
+    }
+
+
+    @Bean
+    public PaginationInnerInterceptor paginationInnerInterceptor(){
+        return new PaginationInnerInterceptor(DbType.MYSQL);
     }
 }

@@ -1,5 +1,7 @@
 package org.wangtianyu.userPlatform.Configuration;
 
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +30,6 @@ public class JacksonConfig implements WebMvcConfigurer {
         mappingHandlerMapping.setMessageConverters(ImmutableList.of(new MappingJackson2HttpMessageConverter()));
         return mappingHandlerMapping;
     }
-
 
 
 }

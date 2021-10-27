@@ -10,8 +10,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class PlatformuserDTO implements Serializable {
-    private String userAccount;
-    private String userPassword;
-    private String userRegType;
-    private String userNickName;
+    private String username;
+    private String password;
+
 }

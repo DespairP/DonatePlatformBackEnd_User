@@ -15,6 +15,7 @@ import javax.servlet.Filter;
 @EnableWebMvc
 @ComponentScan
 @EnableWebSecurity
+@ComponentScan(value = "org.wangtianyu.userPlatform.Service.Impl")
 public class ApplicationMain {
     //DO NOTHING
 
@@ -29,6 +30,5 @@ public class ApplicationMain {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-
 
 }

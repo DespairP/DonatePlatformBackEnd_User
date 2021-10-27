@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,7 +59,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().configurationSource(corsConfigurationSource()).and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/login","/api/login/test").permitAll()
+                .antMatchers("/api/login","/api/login/test","/api/login/register").permitAll()
+                .antMatchers("/api/projects/exhibit","/api/project/info/**","/api/project/**","/api/projects/list").permitAll()
                 .antMatchers("/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
@@ -80,7 +82,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(platformUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
-    @Bean
+    @Bean("userDetailService")
     public UserDetailsService userDetailsService(){
         return new PlatformUserDetailService();
     }

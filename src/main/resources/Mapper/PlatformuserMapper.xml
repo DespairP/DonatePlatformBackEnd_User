@@ -1,87 +1,29 @@
-填充模板出错,FreeMarker template error:
-The following has evaluated to null or missing:
-==> mapperInterface  [in template "template" at line 5, column 22]
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wangtianyu.userPlatform.Mapper.PlatformuserMapper">
 
-----
-Tip: If the failing expression is known to legally refer to something that's sometimes null or missing, either specify a default value like myOptionalVar!myDefault, or use <#if myOptionalVar??>when-present<#else>when-missing</#if>. (These only cover the last step of the expression; to cover the whole expression, use parenthesis: (myOptionalVar.foo)!myDefault, (myOptionalVar.foo)??
-----
+	<resultMap id="BaseResultMap" type="org.wangtianyu.userPlatform.Model.Platformuser">
+		<id property="userId" column="user_id" jdbcType="VARCHAR"/>
+		<result property="userNumber" column="user_number" jdbcType="BIGINT"/>
+		<result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
+		<result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
+		<result property="userRegType" column="user_reg_type" jdbcType="OTHER"/>
+		<result property="userCreateDate" column="user_create_date" jdbcType="TIMESTAMP"/>
+		<result property="userLastLoginTime" column="user_last_login_time" jdbcType="TIMESTAMP"/>
+		<result property="userNickName" column="user_nick_name" jdbcType="VARCHAR"/>
+		<result property="userIsDisposed" column="user_is_disposed" jdbcType="BOOLEAN"/>
+	</resultMap>
 
-----
-FTL stack trace ("~" means nesting-related):
-	- Failed at: ${mapperInterface.packageName}  [in template "template" at line 5, column 20]
-----
+	<select id="userLogin" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/> from platformuser where user_account = #{account}
+	</select>
 
-Java stack trace (for programmers):
-----
-freemarker.core.InvalidReferenceException: [... Exception message was already printed; see it above ...]
-	at freemarker.core.InvalidReferenceException.getInstance(InvalidReferenceException.java:134)
-	at freemarker.core.UnexpectedTypeException.newDescriptionBuilder(UnexpectedTypeException.java:85)
-	at freemarker.core.UnexpectedTypeException.<init>(UnexpectedTypeException.java:48)
-	at freemarker.core.NonHashException.<init>(NonHashException.java:49)
-	at freemarker.core.Dot._eval(Dot.java:48)
-	at freemarker.core.Expression.eval(Expression.java:101)
-	at freemarker.core.DollarVariable.calculateInterpolatedStringOrMarkup(DollarVariable.java:100)
-	at freemarker.core.DollarVariable.accept(DollarVariable.java:63)
-	at freemarker.core.Environment.visit(Environment.java:331)
-	at freemarker.core.Environment.visit(Environment.java:337)
-	at freemarker.core.Environment.process(Environment.java:310)
-	at freemarker.template.Template.process(Template.java:383)
-	at com.baomidou.plugin.idea.mybatisx.generate.template.FreeMakerFormatter.getFormattedContent(FreeMakerFormatter.java:74)
-	at org.mybatis.generator.api.GeneratedJavaFile.getFormattedContent(GeneratedJavaFile.java:46)
-	at com.baomidou.plugin.idea.mybatisx.generate.template.FreemarkerFile.getFormattedContent(FreemarkerFile.java:24)
-	at com.baomidou.plugin.idea.mybatisx.generate.plugin.IntellijMyBatisGenerator.writeGeneratedJavaFile(IntellijMyBatisGenerator.java:230)
-	at com.baomidou.plugin.idea.mybatisx.generate.plugin.IntellijMyBatisGenerator.generate(IntellijMyBatisGenerator.java:155)
-	at com.baomidou.plugin.idea.mybatisx.generate.template.GenerateCode.generate(GenerateCode.java:136)
-	at com.baomidou.plugin.idea.mybatisx.generate.action.MybatisGeneratorMainAction.generateCode(MybatisGeneratorMainAction.java:81)
-	at com.baomidou.plugin.idea.mybatisx.generate.action.MybatisGeneratorMainAction.actionPerformed(MybatisGeneratorMainAction.java:59)
-	at com.intellij.openapi.actionSystem.ex.ActionUtil.lambda$performActionDumbAwareWithCallbacks$4(ActionUtil.java:240)
-	at com.intellij.openapi.actionSystem.ex.ActionUtil.performDumbAwareWithCallbacks(ActionUtil.java:261)
-	at com.intellij.openapi.actionSystem.ex.ActionUtil.performActionDumbAwareWithCallbacks(ActionUtil.java:240)
-	at com.intellij.openapi.actionSystem.impl.ActionMenuItem$ActionTransmitter.lambda$actionPerformed$0(ActionMenuItem.java:248)
-	at com.intellij.openapi.wm.impl.FocusManagerImpl.runOnOwnContext(FocusManagerImpl.java:236)
-	at com.intellij.openapi.wm.impl.IdeFocusManagerImpl.runOnOwnContext(IdeFocusManagerImpl.java:67)
-	at com.intellij.openapi.actionSystem.impl.ActionMenuItem$ActionTransmitter.actionPerformed(ActionMenuItem.java:240)
-	at java.desktop/javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:1967)
-	at com.intellij.openapi.actionSystem.impl.ActionMenuItem.lambda$fireActionPerformed$0(ActionMenuItem.java:90)
-	at com.intellij.openapi.application.TransactionGuardImpl.performUserActivity(TransactionGuardImpl.java:94)
-	at com.intellij.openapi.actionSystem.impl.ActionMenuItem.fireActionPerformed(ActionMenuItem.java:90)
-	at com.intellij.ui.plaf.beg.BegMenuItemUI.doClick(BegMenuItemUI.java:515)
-	at com.intellij.ui.plaf.beg.BegMenuItemUI$MyMouseInputHandler.mouseReleased(BegMenuItemUI.java:545)
-	at java.desktop/java.awt.Component.processMouseEvent(Component.java:6652)
-	at java.desktop/javax.swing.JComponent.processMouseEvent(JComponent.java:3345)
-	at java.desktop/java.awt.Component.processEvent(Component.java:6417)
-	at java.desktop/java.awt.Container.processEvent(Container.java:2263)
-	at java.desktop/java.awt.Component.dispatchEventImpl(Component.java:5027)
-	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2321)
-	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4859)
-	at java.desktop/java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4918)
-	at java.desktop/java.awt.LightweightDispatcher.processMouseEvent(Container.java:4547)
-	at java.desktop/java.awt.LightweightDispatcher.dispatchEvent(Container.java:4488)
-	at java.desktop/java.awt.Container.dispatchEventImpl(Container.java:2307)
-	at java.desktop/java.awt.Window.dispatchEventImpl(Window.java:2784)
-	at java.desktop/java.awt.Component.dispatchEvent(Component.java:4859)
-	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:778)
-	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:727)
-	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:721)
-	at java.base/java.security.AccessController.doPrivileged(Native Method)
-	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
-	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:95)
-	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:751)
-	at java.desktop/java.awt.EventQueue$5.run(EventQueue.java:749)
-	at java.base/java.security.AccessController.doPrivileged(Native Method)
-	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
-	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:748)
-	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.java:885)
-	at com.intellij.ide.IdeEventQueue.dispatchMouseEvent(IdeEventQueue.java:814)
-	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.java:751)
-	at com.intellij.ide.IdeEventQueue.lambda$dispatchEvent$6(IdeEventQueue.java:441)
-	at com.intellij.openapi.progress.impl.CoreProgressManager.computePrioritized(CoreProgressManager.java:825)
-	at com.intellij.ide.IdeEventQueue.lambda$dispatchEvent$7(IdeEventQueue.java:440)
-	at com.intellij.openapi.application.impl.ApplicationImpl.runIntendedWriteActionOnCurrentThread(ApplicationImpl.java:794)
-	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.java:492)
-	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
-	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
-	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
-	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
-	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
-	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+	<sql id="Base_Column_List">
+		user_id,user_number,user_account,
+        user_password,user_reg_type,user_create_date,
+        user_last_login_time,user_nick_name,user_is_disposed
+	</sql>
+</mapper>

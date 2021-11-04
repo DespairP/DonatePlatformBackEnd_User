@@ -18,8 +18,13 @@ public class MessageWrapper<T> implements Serializable {
         this.message = message;
     }
 
+    public static <U> MessageWrapper<U> createUnauthorizedMessage(){
+        return new MessageWrapper<U>(BasicStatus.FAILED,null,"authentication required");
+    }
+
     public enum BasicStatus{
         SUCCESS,
-        FAILED
+        FAILED,
+        DENY
     }
 }

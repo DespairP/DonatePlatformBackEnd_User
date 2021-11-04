@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wangtianyu.userPlatform.Mapper.DonateOrderMapper">
+
+    <resultMap id="BaseResultMap" type="org.wangtianyu.userPlatform.Model.DonateOrder">
+            <id property="orderId" column="order_id" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="projectId" column="project_id" jdbcType="VARCHAR"/>
+            <result property="projectDonateTierId" column="project_donate_tier_id" jdbcType="VARCHAR"/>
+            <result property="orderLocation" column="order_location" jdbcType="VARCHAR"/>
+            <result property="orderPostalCode" column="order_postal_code" jdbcType="VARCHAR"/>
+            <result property="orderDeliverName" column="order_deliver_name" jdbcType="VARCHAR"/>
+            <result property="orderStatus" column="order_status" jdbcType="OTHER"/>
+            <result property="orderIsDisposed" column="order_is_disposed" jdbcType="BOOLEAN"/>
+            <result property="orderDescription" column="order_description" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        order_id,user_id,project_id,
+        project_donate_tier_id,order_location,order_postal_code,
+        order_deliver_name,order_status,order_is_disposed,
+        order_description
+    </sql>
+</mapper>

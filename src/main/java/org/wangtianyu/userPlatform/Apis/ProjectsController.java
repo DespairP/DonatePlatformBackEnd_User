@@ -21,11 +21,13 @@ public class ProjectsController {
 
     private final static int PAGE_SIZE = 8;
 
+    /**获取展示的项目组*/
     @GetMapping("/exhibit")
     public MessageWrapper<List<DonateProject>> getExhibitProjects() {
         return new MessageWrapper<>(MessageWrapper.BasicStatus.SUCCESS, service.selectedExhibitProjects(), "data fetched!");
     }
 
+    /**分页获取过滤后的项目组*/
     @GetMapping("/list")
     public MessageWrapper<Page<DonateProject>> getPageableProject(@RequestParam(value = "page", required = false, defaultValue = "1") Integer currentPage,
                                                                   @RequestParam(value = "time", required = false) String timeDto,
@@ -43,4 +45,14 @@ public class ProjectsController {
         return new MessageWrapper<>(MessageWrapper.BasicStatus.SUCCESS, page, "page get");
     }
 
+    /**分页搜索项目组*/
+    @GetMapping("/search")
+    public MessageWrapper<Page<DonateProject>> searchProject(@RequestParam(value = "key",required = false,defaultValue = "") String key,
+                                                             @RequestParam(value = "page", required = false, defaultValue = "1") Integer currentPage
+                                                             ){
+        if(key == null || "".equals(key)) return new MessageWrapper<>(MessageWrapper.BasicStatus.SUCCESS,null,"key contains nothing");
+        Page<DonateProject> page = new Page<>(Optional.ofNullable(currentPage).orElse(1), 6);
+        page = service.selectProjectPageable(page,new QueryWrapper<DonateProject>().like("project_name",key));
+        return new MessageWrapper<>(MessageWrapper.BasicStatus.SUCCESS,page,"page get");
+    }
 }

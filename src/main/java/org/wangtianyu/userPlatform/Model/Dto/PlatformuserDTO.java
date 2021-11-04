@@ -1,4 +1,4 @@
-package org.wangtianyu.userPlatform.Model;
+package org.wangtianyu.userPlatform.Model.Dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

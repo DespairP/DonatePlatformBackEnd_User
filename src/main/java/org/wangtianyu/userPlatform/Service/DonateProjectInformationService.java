@@ -10,6 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface DonateProjectInformationService extends IService<DonateProjectInformation> {
     public DonateProjectInformation getInfoByProjectId(String projectId);
 
-
-    public DonateProject getByProjectId(String projectId);
+    /**获取项目全部可能的信息*/
+    public DonateProject getInfoAndProjectByProjectId(String projectId);
 }

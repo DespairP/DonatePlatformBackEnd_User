@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
-import org.wangtianyu.userPlatform.Model.DonateDTO;
 import org.wangtianyu.userPlatform.Model.DonateProject;
 
 import java.util.List;

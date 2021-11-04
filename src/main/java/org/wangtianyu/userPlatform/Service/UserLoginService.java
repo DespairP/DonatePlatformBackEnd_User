@@ -1,5 +1,7 @@
 package org.wangtianyu.userPlatform.Service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +17,7 @@ import org.wangtianyu.userPlatform.Mapper.PlatformuserMapper;
 import org.wangtianyu.userPlatform.Model.Platformuser;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
 @Service
 public class UserLoginService {
@@ -26,6 +29,7 @@ public class UserLoginService {
     @Qualifier("userDetailService")
     private UserDetailsService detailsService;
 
+    /**注册用户*/
     public Platformuser registerUser(HttpServletRequest request,Platformuser user)throws Exception{
         int rows = mapper.insert(user);
         if(rows <= 0) throw new IllegalArgumentException("user is already exists!");
@@ -37,4 +41,12 @@ public class UserLoginService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return user;
     }
+
+    public long count(Wrapper<Platformuser> wrapper){
+        return mapper.selectCount(wrapper);
+    }
+
+    public boolean update(UpdateWrapper<Platformuser> wrapper){return mapper.update(null,wrapper) > 0;}
+
+    public Platformuser selectById(Serializable id){return mapper.selectById(id);}
 }

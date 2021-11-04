@@ -50,8 +50,9 @@
         select <include refid="Base_Column_Project_Associate_List"/> from donateproject
             INNER join platformuser
                 on donateproject.user_id = platformuser.user_id
+        where project_status > 1 or project_status &lt; 7
         order by project_create_date
-        limit 0,6
+        limit 0,8
     </select>
 
     <select id="selectProjectJoinWithUser" resultMap="ProjectAssociateUserBaseResultMap">

@@ -8,6 +8,7 @@ import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -42,5 +43,12 @@ public class MyBatisPlusConfig {
     @Bean
     public PaginationInnerInterceptor paginationInnerInterceptor(){
         return new PaginationInnerInterceptor(DbType.MYSQL);
+    }
+
+    @Bean
+    public DataSourceTransactionManager transactionManager(DataSource source){
+        DataSourceTransactionManager manager =new DataSourceTransactionManager();
+        manager.setDataSource(source);
+        return manager;
     }
 }

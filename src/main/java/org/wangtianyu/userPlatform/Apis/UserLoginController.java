@@ -1,22 +1,14 @@
 package org.wangtianyu.userPlatform.Apis;
 
-import org.checkerframework.checker.units.qual.A;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.wangtianyu.userPlatform.Filter.UserPasswordLoginFilter;
-import org.wangtianyu.userPlatform.Mapper.PlatformuserMapper;
 import org.wangtianyu.userPlatform.Model.MessageWrapper;
 import org.wangtianyu.userPlatform.Model.Platformuser;
-import org.wangtianyu.userPlatform.Model.PlatformuserDTO;
+import org.wangtianyu.userPlatform.Model.Dto.PlatformuserDTO;
 import org.wangtianyu.userPlatform.Security.PlatformUserDetail;
 import org.wangtianyu.userPlatform.Service.UserLoginService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.security.Principal;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -41,6 +33,15 @@ public class UserLoginController {
         return new MessageWrapper<Platformuser>(MessageWrapper.BasicStatus.SUCCESS,userDetails.getUser(),"");
     }
 
+    @GetMapping("/reloadUser")
+    public MessageWrapper<Platformuser> reloadUser(){
+        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")) return new MessageWrapper<>(MessageWrapper.BasicStatus.FAILED,null,"authentication required");
+        PlatformUserDetail userDetails = (PlatformUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Platformuser platformuser = service.selectById(userDetails.getUser().getUserId());
+        userDetails.setUser(platformuser);
+        return new MessageWrapper<Platformuser>(MessageWrapper.BasicStatus.SUCCESS,platformuser,"");
+    }
+
     @PostMapping ("/register")
     public MessageWrapper<Platformuser> registerUser(HttpServletRequest request, @RequestBody PlatformuserDTO platformuserDTO) throws NullPointerException{
         try{
@@ -55,6 +56,13 @@ public class UserLoginController {
         }
     }
 
+    @GetMapping("/status")
+    public MessageWrapper<String> getUserStatus(){
+        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")) return new MessageWrapper<>(MessageWrapper.BasicStatus.SUCCESS,null,"authentication required");
+        PlatformUserDetail userDetails = (PlatformUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(userDetails == null) new MessageWrapper<>(MessageWrapper.BasicStatus.SUCCESS,null ,"authentication required");
+        return new MessageWrapper<String>(MessageWrapper.BasicStatus.SUCCESS,userDetails.getUsername(),"logged");
+    }
 
 
 }

@@ -1,10 +1,9 @@
 package org.wangtianyu.userPlatform.Service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.wangtianyu.userPlatform.Mapper.DonateProjectInformationMapper;
-import org.wangtianyu.userPlatform.Model.DonateDTO;
+import org.wangtianyu.userPlatform.Model.Dto.DonateDTO;
 import org.wangtianyu.userPlatform.Model.DonateProject;
 import org.wangtianyu.userPlatform.Model.DonateProjectInformation;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,6 @@ import org.wangtianyu.userPlatform.Service.DonateProjectInformationService;
 import org.wangtianyu.userPlatform.Service.DonateProjectService;
 import org.wangtianyu.userPlatform.Service.DonateService;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -31,7 +29,7 @@ public class DonateProjectInformationServiceImpl extends ServiceImpl<DonateProje
     }
 
     @Override
-    public DonateProject getByProjectId(String projectId) {
+    public DonateProject getInfoAndProjectByProjectId(String projectId) {
         DonateProject project = projectService.selectProjectJoinUser(projectId);
         if(project == null) return null;
         DonateDTO dto = donateService.selectDonateCountInformation(project);

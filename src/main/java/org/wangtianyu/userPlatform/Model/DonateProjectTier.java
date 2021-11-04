@@ -18,6 +18,9 @@ public class DonateProjectTier implements Serializable {
     @TableField("project_id")
     private String projectId;
 
+    @TableField("project_donate_tier_id")
+    private String projectDonateTierId;
+
     @TableField("project_donate_tier_level")
     private Integer projectDonateTierLevel;
 
@@ -30,7 +33,11 @@ public class DonateProjectTier implements Serializable {
     @TableField("project_donate_tier_description")
     private String projectDonateTierDescription;
 
+    @TableField("project_donate_tier_icon")
+    private String projectDonateTierIcon;
+
     @TableField("project_donate_tier_is_disposed")
     private Boolean projectDonateTierIsDisposed;
+
 
 }

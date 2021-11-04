@@ -7,10 +7,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import lombok.Data;
+import lombok.experimental.Accessors;
+import org.wangtianyu.userPlatform.Model.Dto.DonateDTO;
 
 
 @TableName("donateproject")
 @Data
+@Accessors(chain = true)
 public class DonateProject implements Serializable {
 
     @TableId

@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.wangtianyu.userPlatform.Handler.JsonArrayHandler;
 
 /**
@@ -16,6 +17,7 @@ import org.wangtianyu.userPlatform.Handler.JsonArrayHandler;
  * @TableName donateprojectInfomation
  */
 @Data
+@Accessors(chain = true)
 @TableName(value = "donateprojectinformation",autoResultMap = true)
 public class DonateProjectInformation implements Serializable {
 
@@ -36,4 +38,5 @@ public class DonateProjectInformation implements Serializable {
 
     @TableField(value = "project_label",typeHandler = JacksonTypeHandler.class)
     private List<String> projectLabel;
+
 }

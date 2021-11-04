@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wangtianyu.userPlatform.Mapper.PlatformUserWalletMapper">
+
+    <resultMap id="BaseResultMap" type="org.wangtianyu.userPlatform.Model.PlatformUserWallet">
+            <id property="walletId" column="wallet_id" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="userPid" column="user_PID" jdbcType="VARCHAR"/>
+            <result property="userRealName" column="user_real_name" jdbcType="VARCHAR"/>
+            <result property="walletMoney" column="wallet_money" jdbcType="DECIMAL"/>
+            <result property="walletPaymentMethod" column="wallet_payment_method" jdbcType="OTHER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        wallet_id,user_id,user_PID,
+        user_real_name,wallet_money,wallet_payment_method
+    </sql>
+</mapper>

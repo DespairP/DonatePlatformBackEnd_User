@@ -7,15 +7,23 @@
     <resultMap id="BaseResultMap" type="org.wangtianyu.userPlatform.Model.Donate">
             <id property="userId" column="user_id" jdbcType="VARCHAR"/>
             <id property="projectId" column="project_id" jdbcType="VARCHAR"/>
+            <result property="donateTierId" column="donate_tier_id" jdbcType="VARCHAR"/>
             <result property="donatePrice" column="donate_price" jdbcType="DECIMAL"/>
             <result property="donateIsIgnored" column="donate_is_ignored" jdbcType="BOOLEAN"/>
     </resultMap>
 
-    <resultMap id="DonateDtoResultMap" type="org.wangtianyu.userPlatform.Model.DonateDTO">
+    <resultMap id="DonateDtoResultMap" type="org.wangtianyu.userPlatform.Model.Dto.DonateDTO">
         <id property="projectId" column="user_id" jdbcType="VARCHAR"/>
         <result property="totalProgress" column="total_donate_price" jdbcType="DECIMAL"/>
         <result property="donatedUserNumber" column="total_donate_people" jdbcType="INTEGER"/>
     </resultMap>
+
+    <resultMap id="DonateTierDtoResultMap" type="org.wangtianyu.userPlatform.Model.Dto.DonateTierDTO">
+        <id property="projectTierId" column="donate_tier_id" jdbcType="VARCHAR"/>
+        <result property="totalProgress" column="total_donate_price" jdbcType="DECIMAL"/>
+        <result property="donatedUserNumber" column="total_donate_people" jdbcType="INTEGER"/>
+    </resultMap>
+
 
     <select id="selectDonatesCountInformation" resultMap="DonateDtoResultMap" parameterType="list">
         select donateproject.project_id,sum(donate_price) as total_donate_price,count(*) as total_donate_people from donate                                                                                                                   inner join donateproject on donate.project_id = donateproject.project_id
@@ -29,9 +37,24 @@
         select donateproject.project_id,sum(donate_price) as total_donate_price,count(*) as total_donate_people from donate                                                                                                                   inner join donateproject on donate.project_id = donateproject.project_id
         where donateproject.project_id = #{project.projectId}
     </select>
+    <select id="selectUserDonateTierByProjectId" resultMap="org.wangtianyu.userPlatform.Mapper.DonateProjectTierMapper.BaseResultMap">
+        select * from donate left join donateprojecttier on
+                    donate.project_id = donateprojecttier.project_id and donate.donate_tier_id = donateprojecttier.project_donate_tier_id
+        where donate.user_id = #{donate.userId} and donate.project_id = #{donate.projectId}
+    </select>
+
+    <select id="selectUserDonateTierGroupByDonate" resultMap="DonateTierDtoResultMap" parameterType="list">
+        select donate.donate_tier_id,sum(donate_price) as total_donate_price,count(*) as total_donate_people from donate
+        left join donateprojecttier on donateprojecttier.project_donate_tier_id = donate.donate_tier_id
+        where project_donate_tier_id in
+        <foreach collection="list" item="tier" open="(" close=")" separator=",">
+            #{tier.projectDonateTierId,javaType=STRING}
+        </foreach>
+        group by donate_tier_id
+    </select>
 
     <sql id="Base_Column_List">
-        user_id,project_id,donate_price,donate_is_ignored
+        user_id,project_id,donate_tier_id,donate_price,donate_is_ignored
     </sql>
 
 

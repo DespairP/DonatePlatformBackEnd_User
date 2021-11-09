@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wangtianyu.userPlatform.Mapper.DonateProjectUpdateMapper">
+
+    <resultMap id="BaseResultMap" type="org.wangtianyu.userPlatform.Model.DonateProjectUpdate">
+            <id property="projectId" column="project_update_id" jdbcType="VARCHAR"/>
+            <result property="projectId" column="project_id" jdbcType="VARCHAR"/>
+            <result property="projectUpdateTime" column="project_update_time" jdbcType="TIMESTAMP"/>
+            <result property="projectUpdateUser" column="project_update_user" jdbcType="VARCHAR"/>
+            <result property="projectUpdateDescription" column="project_update_description" jdbcType="VARCHAR"/>
+            <result property="projectUpdateTier" column="project_update_tier" jdbcType="INTEGER"/>
+            <result property="projectUpdateIsDisposed" column="project_update_is_disposed" jdbcType="BOOLEAN"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        project_update_id,project_id,project_update_time,project_update_user,
+        project_update_description,project_update_tier,project_update_is_disposed
+    </sql>
+</mapper>

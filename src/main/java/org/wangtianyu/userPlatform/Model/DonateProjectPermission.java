@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * 
@@ -16,9 +18,14 @@ import lombok.NoArgsConstructor;
  */
 @TableName(value ="donateprojectpermissions")
 @Data
+@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class DonateProjectPermission implements Serializable {
+
+    @JsonIgnore
+    public static String PERMISSION_OWNER = "OWNER";
+
     /**
      * 
      */

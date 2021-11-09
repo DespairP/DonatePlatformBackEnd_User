@@ -59,7 +59,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().configurationSource(corsConfigurationSource()).and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/login","/api/login/test","/api/login/register","/logout").permitAll()
+                .antMatchers("/api/login","/api/login/test","/api/login/register","/logout","/api/login/user").permitAll()
                 .antMatchers("/api/projects/exhibit","/api/project/info/**","/api/project/**","/api/projects/list","/api/projects/search").permitAll()
                 .antMatchers("/**").authenticated()
                 .anyRequest().permitAll()

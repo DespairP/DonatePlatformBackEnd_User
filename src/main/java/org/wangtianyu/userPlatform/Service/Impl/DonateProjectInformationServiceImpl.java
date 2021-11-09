@@ -23,6 +23,7 @@ public class DonateProjectInformationServiceImpl extends ServiceImpl<DonateProje
     @Autowired
     DonateService donateService;
 
+    /**通过ProjectId获取项目的详细信息*/
     @Override
     public DonateProjectInformation getInfoByProjectId(String projectId) {
         return getBaseMapper().selectByProjectId(projectId);

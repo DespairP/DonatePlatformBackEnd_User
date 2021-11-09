@@ -1,17 +1,19 @@
 package org.wangtianyu.userPlatform.Apis;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.wangtianyu.userPlatform.Model.DonateProject;
-import org.wangtianyu.userPlatform.Model.DonateProjectInformation;
-import org.wangtianyu.userPlatform.Model.DonateProjectTier;
-import org.wangtianyu.userPlatform.Model.MessageWrapper;
+import org.wangtianyu.userPlatform.Model.*;
+import org.wangtianyu.userPlatform.Security.PlatformUserDetail;
 import org.wangtianyu.userPlatform.Service.DonateProjectInformationService;
 import org.wangtianyu.userPlatform.Service.DonateProjectService;
 import org.wangtianyu.userPlatform.Service.DonateProjectTierService;
+import org.wangtianyu.userPlatform.Service.DonateProjectUpdateService;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -23,7 +25,8 @@ public class ProjectController {
     private DonateProjectTierService projectTierService;
     @Autowired
     private DonateProjectService projectService;
-
+    @Autowired
+    private DonateProjectUpdateService projectUpdateService;
     /**获取项目的详细信息
      * 注意：项目的详细信息不包含项目的统计信息，须通过项目的大致信息的model进行获取*/
     @GetMapping("/info/{id}")
@@ -35,7 +38,7 @@ public class ProjectController {
     }
 
     /**
-     * 获取项目的全部（不含统计信息）信息，
+     * 获取项目的全部（包含统计信息）信息，
      * 包含项目的详细信息和大致信息
      * */
     @GetMapping("/{id}")
@@ -66,7 +69,29 @@ public class ProjectController {
 
     }
 
+    @GetMapping("/{id}/updates")
+    public MessageWrapper<List<DonateProjectUpdate>> getProjectUpdates(@PathVariable("id") String projectId){
+        String userId = getUserId();
+        if(projectService.getById(projectId) == null)
+            return new MessageWrapper<>(MessageWrapper.BasicStatus.FAILED,null,"项目不存在！");
+        return new MessageWrapper<>(MessageWrapper.BasicStatus.SUCCESS,projectUpdateService.getProjectUpdatesByUserAuthority(userId,projectId),"updates get");
+    }
+
+    @GetMapping("/{id}/updates/page")
+    public MessageWrapper<Page<DonateProjectUpdate>> getProjectUpdates(@PathVariable("id") String projectId, @RequestParam(value = "page",defaultValue = "1")Integer currentPage){
+        String userId = getUserId();
+        if(projectService.getById(projectId) == null)
+            return new MessageWrapper<>(MessageWrapper.BasicStatus.FAILED,null,"项目不存在！");
+        return new MessageWrapper<>(MessageWrapper.BasicStatus.SUCCESS,projectUpdateService.getProjectUpdatesByUserAuthorityPageable(userId,projectId,currentPage),"updates get");
+    }
 
 
+    private String getUserId(){
+        if (!(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PlatformUserDetail))
+            return "";
+        PlatformUserDetail detail = (PlatformUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (detail.getUser() != null) return Optional.ofNullable(detail.getUser().getUserId()).orElse("");
+        return "";
+    }
 
 }

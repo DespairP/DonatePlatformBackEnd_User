@@ -29,6 +29,8 @@ public class UserLoginController {
     @GetMapping("/user")
     public MessageWrapper<Platformuser> getLoggerUser(){
         if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser")) return new MessageWrapper<>(MessageWrapper.BasicStatus.FAILED,null,"authentication required");
+        if(!(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PlatformUserDetail))
+            return new MessageWrapper<>(MessageWrapper.BasicStatus.FAILED,null,"authentication required");
         PlatformUserDetail userDetails = (PlatformUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return new MessageWrapper<Platformuser>(MessageWrapper.BasicStatus.SUCCESS,userDetails.getUser(),"");
     }

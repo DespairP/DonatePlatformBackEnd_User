@@ -6,15 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.wangtianyu.userPlatform.Model.*;
 import org.wangtianyu.userPlatform.Model.CaculateModel.CalculateTierModel;
-import org.wangtianyu.userPlatform.Model.DonateProject;
-import org.wangtianyu.userPlatform.Model.DonateProjectPermission;
 import org.wangtianyu.userPlatform.Model.Dto.DonateProjectPostingDTO;
-import org.wangtianyu.userPlatform.Model.MessageWrapper;
-import org.wangtianyu.userPlatform.Model.Platformuser;
 import org.wangtianyu.userPlatform.Security.PlatformUserDetail;
 import org.wangtianyu.userPlatform.Service.DonateProjectPermissionService;
 import org.wangtianyu.userPlatform.Service.DonateProjectService;
+import org.wangtianyu.userPlatform.Service.DonateProjectUpdateService;
 import org.wangtianyu.userPlatform.Service.DonateService;
 import org.wangtianyu.userPlatform.Utils.FileOSSUploadUtil;
 
@@ -36,6 +34,8 @@ public class CreatorController {
     DonateService donateService;
     @Autowired
     FileOSSUploadUtil uploadUtil;
+    @Autowired
+    DonateProjectUpdateService updateService;
 
     /**获取所有自己发布的众筹项目的大致信息*/
     @GetMapping("/projects/own")
@@ -88,6 +88,33 @@ public class CreatorController {
         return new MessageWrapper<>(MessageWrapper.BasicStatus.SUCCESS,donateProjectService.createProject(userId,dto),"project created!");
     }
 
+    /*创建项目更新信息*/
+    @PostMapping("/create/update")
+    public MessageWrapper<DonateProjectUpdate> createProjectUpdate(@RequestBody DonateProjectUpdate update){
+        String userId = getUserId();
+        if(update.getProjectId() == null) return new MessageWrapper<>(MessageWrapper.BasicStatus.FAILED,null,"received data is null");
+        List<String> permissionList = ImmutableList.of("OWNER","MANAGER");
+        if(!checkPermissionIsAvailable(userId,update.getProjectId(),permissionList))
+            return new MessageWrapper<>(MessageWrapper.BasicStatus.DENY,null,"No Permission Available!");
+        update.setProjectUpdateUser(userId);
+        boolean result = updateService.save(update);
+        if(!result) return new MessageWrapper<>(MessageWrapper.BasicStatus.FAILED,null,"Insert Failed");
+        return new MessageWrapper<>(MessageWrapper.BasicStatus.SUCCESS,update,"Insert Successfully");
+    }
+
+    @PostMapping("/delete/update")
+    public MessageWrapper<String> deleteProjectUpdate(@RequestBody DonateProjectUpdate update){
+        String userId = getUserId();
+        if(update.getProjectId() == null) return new MessageWrapper<>(MessageWrapper.BasicStatus.FAILED,null,"received data is null");
+        List<String> permissionList = ImmutableList.of("OWNER","MANAGER");
+        if(!checkPermissionIsAvailable(userId,update.getProjectId(),permissionList))
+            return new MessageWrapper<>(MessageWrapper.BasicStatus.DENY,null,"No Permission Available!");
+        update.setProjectUpdateIsDisposed(true);
+        boolean result = updateService.updateById(update);
+        if(!result) return new MessageWrapper<>(MessageWrapper.BasicStatus.FAILED,null,"Delete Failed");
+        return new MessageWrapper<>(MessageWrapper.BasicStatus.SUCCESS,"删除成功！","Delete Successfully");
+    }
+
 
     private String getUserId(){
         if (!(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PlatformUserDetail))
@@ -134,7 +161,7 @@ public class CreatorController {
         DonateProject project = donateProjectService.getById(projectId);
         if(project == null) return null;
         if(userId.equals(project.getUserId()))
-            return permissions.contains("OWNER") ? new DonateProjectPermission(projectId,userId,"OWNER") : null;
+            return permissions.contains("OWNER") ? new DonateProjectPermission(projectId,userId,DonateProjectPermission.PERMISSION_OWNER) : null;
         DonateProjectPermission permission = donateProjectPermissionService.getOne(new QueryWrapper<DonateProjectPermission>().eq("user_id", userId)
                 .eq("project_id", projectId));
         if(permission == null || permission.getUserPermission() == null) return null;

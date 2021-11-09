@@ -37,6 +37,7 @@ public class DonateServiceImpl extends ServiceImpl<DonateMapper, Donate> impleme
         return baseMapper.selectDonateCountInformation(donateProject);
     }
 
+    /**获取用户在某项捐助的Tier*/
     @Override
     public DonateProjectTier selectUserDonateTierByProjectId(Donate donate) {
         return baseMapper.selectUserDonateTierByProjectId(donate);

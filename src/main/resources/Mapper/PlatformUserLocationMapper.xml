@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.wangtianyu.userPlatform.Mapper.PlatformUserLocationMapper">
+
+    <resultMap id="BaseResultMap" type="org.wangtianyu.userPlatform.Model.PlatformUserLocation">
+            <result property="locationId" column="location_id" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="locationAreaOrCountry" column="location_area_or_country" jdbcType="VARCHAR"/>
+            <result property="locationCity" column="location_city" jdbcType="VARCHAR"/>
+            <result property="locationDetail" column="location_detail" jdbcType="VARCHAR"/>
+            <result property="locationPostalCode" column="location_postal_code" jdbcType="VARCHAR"/>
+            <result property="localtionGeometry" column="localtion_geometry" jdbcType="OTHER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        location_id,user_id,location_area_or_country,
+        location_city,location_detail,location_postal_code,
+        localtion_geometry
+    </sql>
+</mapper>
